@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vimscript Teaching Aid</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card-header {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <!-- Introduction Card -->
+        <div class="card mb-3">
+            <div class="card-header bg-primary text-white">
+                <h5>Unsafe Nature of `gets()` in C</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>`gets()` in C</strong> is considered unsafe because it can lead to <strong>buffer overflow</strong> vulnerabilities. This happens when the function doesn't check if the input exceeds the allocated memory buffer.</p>
+                <p><strong>Key Issue:</strong> If the input exceeds the size of the buffer, it overwrites other memory regions, which can cause <strong>undefined behavior</strong>, crashes, or security vulnerabilities like stack corruption.</p>
+                <code>gets(buffer);</code> (unsafe in C)
+            </div>
+        </div>
+
+        <!-- Explanation of Buffer Overflow -->
+        <div class="card mb-3">
+            <div class="card-header bg-success text-white">
+                <h5>Buffer Overflow Example</h5>
+            </div>
+            <div class="card-body">
+                <p>If you declare a buffer of size 10 but the user enters 20 characters, <code>gets()</code> will allow writing past the buffer’s boundary, which causes overflow.</p>
+                <pre>
+char buffer[10];
+gets(buffer);  // Dangerous if input is more than 10 characters
+                </pre>
+                <p>In the above example, the input exceeds the buffer's allocated size, leading to undefined behavior or memory corruption.</p>
+            </div>
+        </div>
+
+        <!-- Safe Alternative: fgets -->
+        <div class="card mb-3">
+            <div class="card-header bg-warning text-dark">
+                <h5>Safe Alternative: `fgets()` in C</h5>
+            </div>
+            <div class="card-body">
+                <p>In C, a safer alternative to `gets()` is <strong>`fgets()`</strong>, which allows you to specify the buffer size, preventing overflow.</p>
+                <pre>
+char buffer[20];
+fgets(buffer, sizeof(buffer), stdin);  // Safer than gets()
+                </pre>
+                <p>In this example, `fgets()` ensures that no more than `sizeof(buffer)-1` characters are read, including the null-terminator.</p>
+            </div>
+        </div>
+
+        <!-- Pascal's Safe `readln()` -->
+        <div class="card mb-3">
+            <div class="card-header bg-info text-white">
+                <h5>Why Pascal's `readln()` is Safe</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>`readln()` in Pascal</strong> automatically handles input size by reading data into a variable that has a fixed size. It prevents buffer overflow because the input is constrained to the variable’s type and size.</p>
+                <p>If you declare a variable as <code>string[20]</code>, `readln()` will ensure that only 20 characters are accepted, discarding any excess input.</p>
+                <pre>
+program SafeInput;
+var
+  name: string[20];
+begin
+  writeln('Enter your name:');
+  readln(name);  // Only up to 20 characters will be accepted
+  writeln('Hello, ', name);
+end.
+                </pre>
+                <p>This makes Pascal's `readln()` more predictable and secure compared to `gets()` in C.</p>
+            </div>
+        </div>
+
+        <!-- Key Differences Card -->
+        <div class="card mb-3">
+            <div class="card-header bg-secondary text-white">
+                <h5>Key Differences Between C and Pascal Input</h5>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li><strong>Bounds Checking:</strong> In Pascal, `readln()` is tied to the size of the variable, preventing overflow, while `gets()` in C does not check the buffer size.</li>
+                    <li><strong>Error Handling:</strong> Pascal performs bounds checking automatically, while in C, you must handle it manually (e.g., using `fgets()`).</li>
+                    <li><strong>Memory Management:</strong> Pascal enforces size limits, while C provides more control but requires careful management of memory.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Conclusion Card -->
+        <div class="card mb-3">
+            <div class="card-header bg-dark text-white">
+                <h5>Conclusion</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>In summary:</strong></p>
+                <ul>
+                    <li>Pascal's `readln()` is safer than C's `gets()` because it handles bounds checking automatically.</li>
+                    <li>In C, use `fgets()` instead of `gets()` to avoid buffer overflow vulnerabilities.</li>
+                    <li>When writing code, always consider input size limitations to protect against security risks.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
